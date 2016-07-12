@@ -11,6 +11,7 @@ var behatLocalYml = '/Users/cjwest/Documents/htdocs/behat/behat.local.yml';
 var behat = linkyClickyDir + 'bin/behat';
 
 var dirType = 'products';
+var dirTypes = ['products', 'sites', 'environment'];
 var profile = 'local-jse-dev';
 var suite = 'deploy';
 var features = 'features/'
@@ -27,41 +28,49 @@ program
    })
 
    // linky_clicky specific options
-  .option('--paths <items>', 'List of paths to execute tests', paths)
-  .option('--directory-type <type>', 'Can be product, site, or environment')
+  .option('--paths <items>', 'List of paths to execute tests')
+  .option('--directorytype <type>', 'Can be product, site, or environment')
 
   // Behat specific options.
   .option('-p, --profile <type>', 'Profile')
-  .option('-s, --suite <type>', 'Suite', suite)
+  .option('-s, --suite <type>', 'Suite')
   .option('-v, --verbose', 'Verbose')
   .option('-o, --out <type>', 'Write output to a file')
-  .option('--dryrun', 'Dry Run', dryrun)
+  .option('--dryrun', 'Dry Run')
   .parse(process.argv);
 
   if (typeof dirName === 'undefined') {
-   console.error('no command given!');
+   console.error('Error: no directory given');
    process.exit(1);
-  }
-  else {
-    behatDir = linkyClickyDir + '/' + dirType + '/' + dirName;
   }
 
   console.log('\nprogram.profile: ' + program.profile);
   if (program.profile) profile = program.profile;
   if (program.suite) suite = program.suite;
   if (program.profile) profile = program.profile;
+  if (program.directorytype) dirType = program.directorytype;
+
+  if (dirTypes.indexOf(dirType != -1)) {
+   console.error('Error: ' + dirType + ' directory type is not available. Availble directories are: ' + dirTypes.toString());
+   process.exit(1);
+  }
+
 
   if (program.dryrun) dry_run = '--dryrun';
 
 //if (program.pineapple) console.log('  - pineapple');
 //if (program.bbqSauce) console.log('  - bbq');
 
+behatDir = linkyClickyDir + dirType + '/' + dirName;
+
 cmd = behat + ' -p ' + profile + ' -s ' + suite + ' ' + dryrun + ' ' + features;
 console.log('\nRunning with: '
-  + '\nlinky-clicky directory: ' + linkyclickydir
+  + '\nlinky-clicky directory: ' + linkyClickyDir
   + '\nbehat: ' + behat
-  + '\nbehat.local.yml: ' + behatlocalyml
-  + '\nstartdir: ' + startdir
+  + '\nbehat.local.yml: ' + behatLocalYml
+  + '\nstartdir: ' + startDir
+  + '\nBehat Directory: ' + behatDir
+
   + '\ncommand: ' + cmd
   + '\n');
 
