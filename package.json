@@ -1,0 +1,15 @@
+{
+  "name": "run_tests",
+  "version": "1.0.0",
+  "description": "Set of commands for executing behat tests",
+  "main": "index.js",
+  "dependencies": {
+    "shelljs": "^0.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Caryl Westerberg",
+  "license": "ISC"
+}
