@@ -14,11 +14,17 @@ var dirType = 'products';
 var dirTypes = ['products', 'sites', 'environment'];
 var profile = 'local-jse-dev';
 var suite = 'deploy';
-var features = 'features/'
+var paths = 'features'
+var outFile = '';
+var verbose = '';
 var behatDir = '';
 var startDir = pwd();
 var dryrun = '';
 var cmd = '';
+
+function paths(val) {
+  return val.split(',');
+}
 
 program
   .version('0.0.1')
@@ -28,7 +34,7 @@ program
    })
 
    // linky_clicky specific options
-  .option('--paths <items>', 'List of paths to execute tests')
+  .option('--paths <items>', 'List of paths to execute tests', paths)
   .option('--directorytype <type>', 'Can be product, site, or environment')
 
   // Behat specific options.
@@ -45,13 +51,15 @@ program
   }
 
   console.log('\nprogram.profile: ' + program.profile);
-  if (program.profile) profile = program.profile;
-  if (program.suite) suite = program.suite;
-  if (program.profile) profile = program.profile;
+  if (program.profile) profile = '-p ' + program.profile;
+  console.log('\nprogram.suite: ' + program.suite);
+  if (program.suite) suite = '-s ' + program.suite;
+//  if (program.out) outFile = '-o ' + program.out;
   if (program.directorytype) dirType = program.directorytype;
 
-  if (dirTypes.indexOf(dirType != -1)) {
-   console.error('Error: ' + dirType + ' directory type is not available. Availble directories are: ' + dirTypes.toString());
+  if (dirTypes.indexOf(dirType) === -1) {
+   console.error('Error: ' + dirType
+    + ' directory type is not available. Availble directories are: ' + dirTypes.toString());
    process.exit(1);
   }
 
@@ -63,14 +71,20 @@ program
 
 behatDir = linkyClickyDir + dirType + '/' + dirName;
 
-cmd = behat + ' -p ' + profile + ' -s ' + suite + ' ' + dryrun + ' ' + features;
+cmd = behat + ' '
+  + profile + ' '
+  + suite + ' '
+  + dryrun + ' '
+  + outFile + ' '
+  + verbose + ' '
+  + paths;
+
 console.log('\nRunning with: '
   + '\nlinky-clicky directory: ' + linkyClickyDir
   + '\nbehat: ' + behat
   + '\nbehat.local.yml: ' + behatLocalYml
   + '\nstartdir: ' + startDir
   + '\nBehat Directory: ' + behatDir
-
   + '\ncommand: ' + cmd
   + '\n');
 
