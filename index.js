@@ -33,41 +33,37 @@ program
 
    // linky_clicky specific options
   .option('--paths <items>', 'Space separated list of feature paths')
-  .option('--directorytype <type>', 'Can be product, site, or environment')
+  //.option('--directorytype <type>', 'Can be product, site, or environment')
+  .option('--directorytype [type]', 'Directory Types: ' + dirTypes.toString())
+
 
   // Behat specific options.
+  .option('--dryrun', 'Dry Run')
+  .option('-o, --out <file>', 'Write output to a file')
   .option('-p, --profile <name>', 'Profile')
   .option('-s, --suite <name>', 'Suite')
   .option('-v, --verbose', 'Verbose')
-  .option('-o, --out <file>', 'Write output to a file')
-  .option('--dryrun', 'Dry Run')
   .parse(process.argv);
 
   if (typeof dirName === 'undefined') {
-   console.error('Error: no directory given');
+   console.error('Error: missing directory');
    process.exit(1);
   }
 
-  console.log('\nprogram.profile: ' + program.profile);
   if (program.profile) profile = '-p ' + program.profile;
-  console.log('\nprogram.suite: ' + program.suite);
   if (program.suite) suite = '-s ' + program.suite;
-//  if (program.out) outFile = '-o ' + program.out;
+  if (program.out) outFile = '-o ' + program.out;
   if (program.paths) paths =  program.paths;
+  if (program.dryrun) dry_run = '--dryrun';
+  if (program.verbose) verbose = '-v';
 
   if (program.directorytype) dirType = program.directorytype;
-
   if (dirTypes.indexOf(dirType) === -1) {
-   console.error('Error: ' + dirType
-    + ' directory type is not available. Availble directories are: ' + dirTypes.toString());
+   console.error("Error: %j directory type is not available. Availble directories are: %s",
+     dirType, dirTypes.toString());
    process.exit(1);
   }
 
-
-  if (program.dryrun) dry_run = '--dryrun';
-
-//if (program.pineapple) console.log('  - pineapple');
-//if (program.bbqSauce) console.log('  - bbq');
 
 behatDir = linkyClickyDir + dirType + '/' + dirName;
 
@@ -79,15 +75,16 @@ cmd = behat + ' '
   + verbose + ' '
   + paths;
 
-console.log('\nRunning with: '
-  + '\nlinky-clicky directory: ' + linkyClickyDir
-  + '\nbehat: ' + behat
-  + '\nbehat.local.yml: ' + behatLocalYml
-  + '\nstartdir: ' + startDir
-  + '\nBehat Directory: ' + behatDir
-  + '\ncommand: ' + cmd
-  + '\n');
+  if (verbose == '-v') {
+    console.log('\nUsing: '
+    + '\nlinky-clicky directory: ' + linkyClickyDir
+    + '\nbehat: ' + behat
+    + '\nbehat.local.yml: ' + behatLocalYml
+    + '\nBehat Directory: ' + behatDir
+    + '\ncommand: ' + cmd
+    + '\n');
+  }
 
 cd(behatDir);
-//exec(cmd);
+exec(cmd);
 cd(startDir);
