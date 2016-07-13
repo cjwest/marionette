@@ -22,9 +22,7 @@ var startDir = pwd();
 var dryrun = '';
 var cmd = '';
 
-function paths(val) {
-  return val.split(',');
-}
+
 
 program
   .version('0.0.1')
@@ -34,14 +32,14 @@ program
    })
 
    // linky_clicky specific options
-  .option('--paths <items>', 'List of paths to execute tests', paths)
+  .option('--paths <items>', 'Space separated list of feature paths')
   .option('--directorytype <type>', 'Can be product, site, or environment')
 
   // Behat specific options.
-  .option('-p, --profile <type>', 'Profile')
-  .option('-s, --suite <type>', 'Suite')
+  .option('-p, --profile <name>', 'Profile')
+  .option('-s, --suite <name>', 'Suite')
   .option('-v, --verbose', 'Verbose')
-  .option('-o, --out <type>', 'Write output to a file')
+  .option('-o, --out <file>', 'Write output to a file')
   .option('--dryrun', 'Dry Run')
   .parse(process.argv);
 
@@ -55,6 +53,8 @@ program
   console.log('\nprogram.suite: ' + program.suite);
   if (program.suite) suite = '-s ' + program.suite;
 //  if (program.out) outFile = '-o ' + program.out;
+  if (program.paths) paths =  program.paths;
+
   if (program.directorytype) dirType = program.directorytype;
 
   if (dirTypes.indexOf(dirType) === -1) {
