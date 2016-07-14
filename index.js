@@ -11,6 +11,7 @@ var config = require('config');
 // Defaults
 var linkyClickyDir = config.get('linky_clicky.rootdir');
 var behatLocalYml = config.get('linky_clicky.behatLocalYml');;
+var environment = config.get('environment');
 var behat = linkyClickyDir + 'bin/behat';
 
 var cmd = '';
@@ -87,10 +88,14 @@ cmd = behat + ' '
     + '\nbehat: ' + behat
     + '\nbehat.local.yml: ' + behatLocalYml
     + '\nBehat Directory: ' + behatDir
+    + '\nenvironment: ' + environment
     + '\ncommand: ' + cmd
     + '\n');
   }
 
 cd(behatDir);
 exec(cmd);
+if (environment == 'shinydevbox') {
+  exec('kill -9 $(lsof -ti tcp:4444)');
+}
 cd(startDir);

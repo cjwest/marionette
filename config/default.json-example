@@ -2,5 +2,6 @@
   "linky_clicky" : {
     "rootdir": "/path/to/linky_clicky/",
     "behatLocalYml": "/path/to/behat.local.yml"
-  }
+  },
+  "environment" : "local"
 }
