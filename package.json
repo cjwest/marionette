@@ -5,6 +5,7 @@
   "readme": "README.md",
   "main": "index.js",
   "dependencies": {
+    "commander": "^2.9.0",
     "shelljs": "^0.7.0"
   },
   "devDependencies": {},
@@ -12,9 +13,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Caryl Westerberg",
-  "license": "GPL-2.0"
+  "license": "GPL-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SU-SWS/marionette.git"
-  },
+  }
 }
