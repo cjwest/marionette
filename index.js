@@ -5,9 +5,12 @@ require('shelljs/global');
 //https://www.npmjs.com/package/commander
 var program = require('commander');
 
+//https://www.npmjs.com/package/config
+var config = require('config');
+
 // Defaults
-var linkyClickyDir = '/Users/cjwest/Documents/htdocs/behat/linky_clicky/';
-var behatLocalYml = '/Users/cjwest/Documents/htdocs/behat/behat.local.yml';
+var linkyClickyDir = config.get('linky_clicky.rootdir');
+var behatLocalYml = config.get('linky_clicky.behatLocalYml');;
 var behat = linkyClickyDir + 'bin/behat';
 
 var cmd = '';
