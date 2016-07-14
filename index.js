@@ -10,17 +10,18 @@ var linkyClickyDir = '/Users/cjwest/Documents/htdocs/behat/linky_clicky/';
 var behatLocalYml = '/Users/cjwest/Documents/htdocs/behat/behat.local.yml';
 var behat = linkyClickyDir + 'bin/behat';
 
+var cmd = '';
+var behatDir = '';
 var dirType = 'products';
 var dirTypes = ['products', 'sites', 'environment'];
-var profile = 'local-jse-dev';
-var suite = 'deploy';
-var paths = 'features'
-var outFile = '';
-var verbose = '';
-var behatDir = '';
-var startDir = pwd();
 var dryrun = '';
-var cmd = '';
+var outFile = '';
+var profile = '-p local-jse-dev';
+var suite = '-s deploy';
+var paths = 'features'
+var startDir = pwd();
+var tags = '';
+var verbose = '';
 
 
 
@@ -42,6 +43,7 @@ program
   .option('-o, --out <file>', 'Write output to a file')
   .option('-p, --profile <name>', 'Profile')
   .option('-s, --suite <name>', 'Suite')
+  .option('--tags <name>', 'List of Tags')
   .option('-v, --verbose', 'Verbose')
   .parse(process.argv);
 
@@ -50,11 +52,12 @@ program
    process.exit(1);
   }
 
-  if (program.profile) profile = '-p ' + program.profile;
-  if (program.suite) suite = '-s ' + program.suite;
+  if (program.dryrun) dry_run = '--dryrun';
   if (program.out) outFile = '-o ' + program.out;
   if (program.paths) paths =  program.paths;
-  if (program.dryrun) dry_run = '--dryrun';
+  if (program.profile) profile = '-p ' + program.profile;
+  if (program.suite) suite = '-s ' + program.suite;
+  if (program.suite) tags = '--tags ' + program.suite;
   if (program.verbose) verbose = '-v';
 
   if (program.directorytype) dirType = program.directorytype;
@@ -64,14 +67,14 @@ program
    process.exit(1);
   }
 
-
 behatDir = linkyClickyDir + dirType + '/' + dirName;
 
 cmd = behat + ' '
-  + profile + ' '
-  + suite + ' '
   + dryrun + ' '
   + outFile + ' '
+  + profile + ' '
+  + tags + ' '
+  + suite + ' '
   + verbose + ' '
   + paths;
 
