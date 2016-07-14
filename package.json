@@ -4,6 +4,7 @@
   "description": "Set of commands for executing behat tests",
   "main": "index.js",
   "dependencies": {
+    "commander": "^2.9.0",
     "shelljs": "^0.7.0"
   },
   "devDependencies": {},
